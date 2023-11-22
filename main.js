@@ -34,15 +34,21 @@ const Person = {
 };
 
 function PersonFunction(name) {
+  var laptop = "laptop";
   this.name = name;
+
+  // Inside the function, you can access laptop
+  console.log("Inside function: " + laptop);
 }
 
-PersonFunctions
-
+// Outside the function, laptop is not accessible
 const angel = new PersonFunction("Angel");
-angel.GetProtytypeOf().getName = 
+console.log("Outside function: " + angel.name); // This will work
+console.log("Outside function: " + laptop); // This will throw a ReferenceError
 
-console.log(angel.name);
+// So the reason it did not work is I tried to log the var outside of the function
+// I guess that if i were to have a main function, then it would still only be defined 
+// within the PersonFunction and all of it's children
 
 
 
