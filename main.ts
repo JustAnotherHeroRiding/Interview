@@ -31,7 +31,7 @@ class Book {
     return this.isAvailable;
   }
 
-  reverseIsAvailble() {
+  swapBookAvailbility() {
     this.isAvailable = !this.isAvailable;
   }
 
@@ -44,12 +44,12 @@ class Biblioteka {
   private books: Book[];
   private rentedBooks: Book[];
 
-  constructor(books: Book[] | null) {
+  constructor(books: Book[]) {
     this.books = books ? books : [];
     this.rentedBooks = [];
   }
 
-  getAvailable() {
+  getAvailableBooks() {
     return this.books?.filter((book) => book.getIsAvailable());
   }
 
@@ -67,7 +67,7 @@ class Biblioteka {
   lendBook(naslov: string) {
     const bookToLend = this.getByTitle(naslov);
     if (bookToLend?.getIsAvailable()) {
-      bookToLend?.reverseIsAvailble();
+      bookToLend?.swapBookAvailbility();
       this.rentedBooks?.push(bookToLend);
     }
   }
@@ -76,7 +76,7 @@ class Biblioteka {
   returnBook(naslov: string) {
     const bookToLend = this.getByTitle(naslov);
     if (bookToLend?.getIsAvailable()) {
-      bookToLend?.reverseIsAvailble();
+      bookToLend?.swapBookAvailbility();
       const rentedBookIndex = this.rentedBooks?.indexOf(bookToLend);
       if (rentedBookIndex === -1) {
         return;
@@ -86,8 +86,15 @@ class Biblioteka {
   }
 
   getAvailableAndRented(): AvailableAndRented {
+    const newAvailable = this.getAvailableBooks();
+    /* const newRented = this.rentedBooks.filter(
+      (book) => newAvailable.indexOf(book) === -1
+    ); */
+    const newRented = this.rentedBooks.filter((book) => !newAvailable.includes(book))
+    const copyRented = [...newRented]
+   // const reduce = Map
     return {
-      availableBooks: this.getAvailable(),
+      availableBooks: this.getAvailableBooks(),
       rentedBooks: this.rentedBooks,
     };
   }
